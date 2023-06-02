@@ -1,0 +1,186 @@
+#include <iostream>
+#include <windows.h>
+#include <direct.h>
+#include <stdlib.h>
+#include <locale.h>
+#include <string>
+#include <ctime>
+
+#define ANCHO 59
+#define ALTO 25
+
+using namespace std;
+
+int randominicio = 0;
+int randomfinal = 0;
+int posacx = 0;
+int posacy = 0;
+
+int posantx = 0;
+int posanty = 0;
+
+int posfix = 0;
+int posfiy = 0;
+char wasd;
+
+
+void gotoxy(int x, int y)
+{
+    HANDLE hCon;
+    hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD dwPos;
+    dwPos.X = x;
+    dwPos.Y = y;
+    SetConsoleCursorPosition(hCon, dwPos);
+}
+
+void matriz5x5()
+{
+    for (int x = 0; x <= 50; x++)
+    {
+        for (int i = 0; i <= 20; i++)
+        {
+            gotoxy(x, i);
+            cout << char(219);
+        }
+        x = x + 9;
+    }
+
+    for (int y = 0; y < ALTO-8; y++)
+    {
+        for (int i = 0; i <= 50; i++)
+        {
+            gotoxy(i, y);
+            cout << char(254);
+            gotoxy(i, y+4);
+            cout << char(254);
+        }
+        y = y + 3;
+
+        
+    }
+}
+
+void iniciofin()
+{
+    srand(time(NULL));
+    randominicio = rand() % (5 - 1 + 1) + 1;
+    switch (randominicio)
+    {
+    case 1:
+        gotoxy(5, 2);
+        cout << char(01);
+        posacx = 5;
+        posacy = 2;
+        break;
+    case 2:
+        gotoxy(5, 6);
+        cout << char(01);
+        posacx = 5;
+        posacy = 6;
+        break;
+    case 3:
+        gotoxy(5, 10);
+        cout << char(01);
+        posacx = 5;
+        posacy = 10;
+        break;
+    case 4:
+        gotoxy(5, 14);
+        cout << char(01);
+        posacx = 5;
+        posacy = 14;
+        break;
+    case 5:
+        gotoxy(5, 18);
+        cout << char(01);
+        posacx = 5;
+        posacy = 18;
+        break;
+    default:
+        break;
+    }
+
+    randomfinal = rand() % (5 - 1 + 1) + 1;
+
+    switch (randomfinal)
+    {
+    case 1:
+        gotoxy(43, 2);
+        cout << "META!";
+        posfix = 43;
+        posfiy = 2;
+        break;
+    case 2:
+        gotoxy(43, 6);
+        cout << "META!";
+        posfix = 43;
+        posfiy = 6;
+        break;
+    case 3:
+        gotoxy(43, 10);
+        cout << "META!";
+        posfix = 43;
+        posfiy = 10;
+        break;
+    case 4:
+        gotoxy(43, 14);
+        cout << "META!";
+        posfix = 443;
+        posfiy = 14;
+        break;
+    case 5:
+        gotoxy(43, 18);
+        cout << "META!";
+        posfix = 43;
+        posfiy = 18;
+        break;
+    default:
+        break;
+    }
+
+}
+
+
+int main()
+{
+    char palabra;
+    system("Color 02");
+    matriz5x5();
+    iniciofin();
+
+    gotoxy(0, 22);
+    cout << "Ingrese WASD para desplazarse" << endl;
+    cin >> wasd;
+
+    cout << wasd << endl;
+    if (wasd=='W'|| wasd=='w')
+    {
+        system("cls");
+        matriz5x5();
+
+        //Volvemos a llamar a la meta en las posiciones generadas al principio.
+        gotoxy(posfix, posfiy);
+        cout << "META!";
+        if ((posacy-4)>1)
+        {
+            gotoxy(posacx, posacy - 4);
+            cout << char(01);
+            posantx = posacx;
+            posanty = posacy;
+        }
+        else
+        {
+            gotoxy(posacx, posacy);
+            cout << char(01);
+        }
+
+        //En ex no pasa ni brga
+        posacx = posacx;
+        posacy = posacy-4;
+
+    }
+
+    gotoxy(0, 25);
+    system("pause");
+}
