@@ -1,0 +1,552 @@
+#include <iostream>
+#include <windows.h>
+#include <direct.h>
+#include <stdlib.h>
+#include <locale.h>
+#include <string>
+#include <ctime>
+
+#define ANCHO 59
+#define ALTO 25
+
+using namespace std;
+
+int randominicio = 0;
+int randomfinal = 0;
+int posacx = 0;
+int posacy = 0;
+
+int posantx1 = 0;
+int posanty1 = 0;
+int posantx2 = 0;
+int posanty2 = 0;
+
+int posfix = 0;
+int posfiy = 0;
+char wasd;
+
+int cont = 0;
+
+int random = 0;
+int cadenanum[8] = { 0,0,0,0,0,0,0,0 };
+int indice = 0;
+
+int respuesta = 0;
+int total = 0;
+int intentos = 8;
+
+bool fin = false;
+
+
+void gotoxy(int x, int y)
+{
+    HANDLE hCon;
+    hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD dwPos;
+    dwPos.X = x;
+    dwPos.Y = y;
+    SetConsoleCursorPosition(hCon, dwPos);
+}
+
+void matriz5x5()
+{
+    for (int x = 0; x <= 50; x++)
+    {
+        for (int i = 0; i <= 20; i++)
+        {
+            gotoxy(x, i);
+            cout << char(219);
+        }
+        x = x + 9;
+    }
+
+    for (int y = 0; y < ALTO - 8; y++)
+    {
+        for (int i = 0; i <= 50; i++)
+        {
+            gotoxy(i, y);
+            cout << char(254);
+            gotoxy(i, y + 4);
+            cout << char(254);
+        }
+        y = y + 3;
+
+
+    }
+}
+
+void iniciofin()
+{
+    srand(time(NULL));
+    randominicio = rand() % (5 - 1 + 1) + 1;
+    switch (randominicio)
+    {
+    case 1:
+        gotoxy(5, 2);
+        cout << char(01);
+        posacx = 5;
+        posacy = 2;
+        break;
+    case 2:
+        gotoxy(5, 6);
+        cout << char(01);
+        posacx = 5;
+        posacy = 6;
+        break;
+    case 3:
+        gotoxy(5, 10);
+        cout << char(01);
+        posacx = 5;
+        posacy = 10;
+        break;
+    case 4:
+        gotoxy(5, 14);
+        cout << char(01);
+        posacx = 5;
+        posacy = 14;
+        break;
+    case 5:
+        gotoxy(5, 18);
+        cout << char(01);
+        posacx = 5;
+        posacy = 18;
+        break;
+    default:
+        break;
+    }
+
+    randomfinal = rand() % (5 - 1 + 1) + 1;
+
+    switch (randomfinal)
+    {
+    case 1:
+        gotoxy(43, 2);
+        cout << "META!";
+        posfix = 43;
+        posfiy = 2;
+        break;
+    case 2:
+        gotoxy(43, 6);
+        cout << "META!";
+        posfix = 43;
+        posfiy = 6;
+        break;
+    case 3:
+        gotoxy(43, 10);
+        cout << "META!";
+        posfix = 43;
+        posfiy = 10;
+        break;
+    case 4:
+        gotoxy(43, 14);
+        cout << "META!";
+        posfix = 43;
+        posfiy = 14;
+        break;
+    case 5:
+        gotoxy(43, 18);
+        cout << "META!";
+        posfix = 43;
+        posfiy = 18;
+        break;
+    default:
+        break;
+    }
+
+}
+
+void findeljuego()
+{
+    system("Color 06");
+    system("cls");
+    matriz5x5();
+    gotoxy(posacx, posacy);
+    cout << char(01);
+    gotoxy(0, 22);
+    cout << "HAS LLEGADO A LA META FELICIDADES!" << endl;
+    for (int i = 0; i < 35; i++)
+    {
+        system("Color 06");
+        gotoxy(i, 23);
+        cout << char(205);
+        system("Color 07");
+        i++;
+    }
+    system("Color 06");
+    gotoxy(0, 24);
+    cout << "Fin del Juego..." << endl;
+    system("pause");
+}
+
+
+int main()
+{
+    
+    char palabra;
+    system("Color 02");
+    iniciofin();
+
+
+    do
+    {
+        do
+        {
+            system("cls");
+            matriz5x5();
+            gotoxy(posacx, posacy);
+            cout << char(01);
+            gotoxy(posfix, posfiy);
+            cout << "META!";
+
+            system("Color 02");
+            gotoxy(0, 25);
+            cout << "Posicion acutal: ("<< posacx<<","<< posacy<<")" << endl;
+            gotoxy(0, 26);
+            cout << "Posicion Final: (" << posfix << "," << posfiy << ")" << endl;
+            gotoxy(0, 22);
+            cout << "Ingrese WASD para desplazarse | Intentos restantes: "<< intentos << endl;
+            cin >> wasd;
+
+            if (wasd == 'W' || wasd == 'w')
+            {
+                system("cls");
+                matriz5x5();
+                //Volvemos a llamar a la meta en las posiciones generadas al principio.
+                gotoxy(posfix, posfiy);
+                cout << "META!";
+
+
+                if ((posacy - 4) > 1)
+                {
+                    gotoxy(posacx, posacy - 4);
+                    cout << char(01);
+                    //Guardamos las posiciones en donde estaba antes de moverse
+                    posantx2 = posantx1;
+                    posanty2 = posanty1;
+
+                    posantx1 = posacx;
+                    posanty1 = posacy;
+                    //Actualizamos las posiciones actuales
+                    posacx = posacx;
+                    posacy = posacy - 4;
+
+                    cont++;
+
+
+                }
+                else
+                {
+                    gotoxy(posacx, posacy);
+                    cout << char(01);
+                }
+
+            }
+            else if (wasd == 'A' || wasd == 'a')
+            {
+                system("cls");
+                matriz5x5();
+                //Volvemos a llamar a la meta en las posiciones generadas al principio.
+                gotoxy(posfix, posfiy);
+                cout << "META!";
+
+
+                if ((posacx - 10) > 0)
+                {
+                    gotoxy(posacx - 10, posacy);
+                    cout << char(01);
+                    //Guardamos las posiciones en donde estaba antes de moverse
+                    posantx2 = posantx1;
+                    posanty2 = posanty1;
+
+                    posantx1 = posacx;
+                    posanty1 = posacy;
+                    //Actualizamos las posiciones actuales
+                    posacx = posacx - 10;
+                    posacy = posacy;
+
+                    cont++;
+                }
+                else
+                {
+                    gotoxy(posacx, posacy);
+                    cout << char(01);
+                }
+
+            }
+            else if (wasd == 'D' || wasd == 'd')
+            {
+                system("cls");
+                matriz5x5();
+                //Volvemos a llamar a la meta en las posiciones generadas al principio.
+                gotoxy(posfix, posfiy);
+                cout << "META!";
+
+
+                if ((posacx + 10) <= 45)
+                {
+                    gotoxy(posacx + 10, posacy);
+                    cout << char(01);
+                    //Guardamos las posiciones en donde estaba antes de moverse
+                    posantx2 = posantx1;
+                    posanty2 = posanty1;
+
+                    posantx1 = posacx;
+                    posanty1 = posacy;
+                    //Actualizamos las posiciones actuales
+                    posacx = posacx + 10;
+                    posacy = posacy;
+
+                    cont++;
+                }
+                else
+                {
+                    gotoxy(posacx, posacy);
+                    cout << char(01);
+                }
+
+            }
+            else if (wasd == 'S' || wasd == 's')
+            {
+                system("cls");
+                matriz5x5();
+                //Volvemos a llamar a la meta en las posiciones generadas al principio.
+                gotoxy(posfix, posfiy);
+                cout << "META!";
+
+
+                if ((posacy + 4) <= 18)
+                {
+                    gotoxy(posacx, posacy + 4);
+                    cout << char(01);
+                    //Guardamos las posiciones en donde estaba antes de moverse
+                    posantx2 = posantx1;
+                    posanty2 = posanty1;
+
+                    posantx1 = posacx;
+                    posanty1 = posacy;
+                    //Actualizamos las posiciones actuales
+                    posacx = posacx;
+                    posacy = posacy + 4;
+
+                    cont++;
+                }
+                else
+                {
+                    gotoxy(posacx, posacy);
+                    cout << char(01);
+                }
+
+            }
+
+            if ((posacx-2 == posfix) && (posacy == posfiy))
+            {
+                //funcion fin
+                findeljuego();
+                return 0;
+            }
+
+        } while (cont <= 1);
+
+        //Comprobar que no estemos en la meta
+
+        //Reinciamos todo
+        for (int i = 0; i < 8; i++)
+        {
+            cadenanum[i] = 0;
+        }
+        indice = 0;
+        //Generar los 8 randoms que iran alrededor de la carita
+        for (int x = 0; x < 8; x++)
+        {
+            random = rand() % (9 - 1 + 1) + 1;
+            for (int i = 0; i < 8; i++)
+            {
+                if (random == cadenanum[i])
+                {
+                    random = rand() % (9 - 1 + 1) + 1;
+                    i = -1;
+                }
+
+            }
+            cadenanum[indice] = random;
+            indice++;
+        }
+
+
+        //Mostrar todo de nuevo
+
+        system("cls");
+        matriz5x5();
+        
+        gotoxy(posacx, posacy);
+        cout << char(01);
+
+        //Establecemos la posicion del carita
+        /*
+        posacx = 15;
+        posacy = 18;
+        */
+
+        //Mostrar los numeos alrededor
+
+        //Izquierda superior
+        if ((posacx - 10 > 0) && (posacy - 4 > 1))
+        {
+            gotoxy(posacx - 10, posacy - 4);
+            cout << cadenanum[0];
+        }
+        else
+        {
+            cadenanum[0] = 0;
+        }
+
+        //Centro superior
+        if (posacy - 4 > 1)
+        {
+            gotoxy(posacx, posacy - 4);
+            cout << cadenanum[1];
+        }
+        else
+        {
+            cadenanum[1] = 0;
+        }
+
+        //Derecha superior
+        if ((posacx + 10 <= 45) && (posacy - 4 > 1))
+        {
+            gotoxy(posacx + 10, posacy - 4);
+            cout << cadenanum[2];
+        }
+        else
+        {
+            cadenanum[2] = 0;
+        }
+
+
+        //Medio izquierdo
+        if ((posacx - 10 > 0))
+        {
+            gotoxy(posacx - 10, posacy);
+            cout << cadenanum[3];
+        }
+        else
+        {
+            cadenanum[3] = 0;
+        }
+
+
+        //Medio derecho
+        if (posacx + 10 <= 45)
+        {
+            gotoxy(posacx + 10, posacy);
+            cout << cadenanum[4];
+        }
+        else
+        {
+            cadenanum[4] = 0;
+        }
+
+        //Izquierda inferior
+        if ((posacx - 10 > 0) && (posacy + 4 <= 18))
+        {
+            gotoxy(posacx - 10, posacy + 4);
+            cout << cadenanum[5];
+        }
+        else
+        {
+            cadenanum[5] = 0;
+        }
+
+
+        //Centro inferior
+        if ((posacy + 4 <= 18))
+        {
+            gotoxy(posacx, posacy + 4);
+            cout << cadenanum[6];
+        }
+        else
+        {
+            cadenanum[6] = 0;
+        }
+
+
+        //Centro inferior
+        if ((posacx + 10 <= 45) && (posacy + 4 <= 18))
+        {
+            gotoxy(posacx + 10, posacy + 4);
+            cout << cadenanum[7];
+        }
+        else
+        {
+            cadenanum[7] = 0;
+        }
+
+        //Fin posicionar los numeros random
+
+        //Hacemos la operachon
+        total = ((cadenanum[0] + cadenanum[1] + cadenanum[2]) * cadenanum[4]) - ((cadenanum[5] + cadenanum[6] + cadenanum[7]) * cadenanum[3]);
+
+
+
+        system("Color 04");
+        gotoxy(0, 22);
+        cout << "[(" << cadenanum[0] << "+" << cadenanum[1] << "+" << cadenanum[2] << ") x ";
+        cout << cadenanum[4] << "] - [(" << cadenanum[5] << "+" << cadenanum[6] << "+" << cadenanum[7];
+        cout << ") x " << cadenanum[3] << "]" << endl;
+        gotoxy(0, 23);
+        cout << "Ingrese su respuesta" << endl;
+        cin >> respuesta;
+
+        if (respuesta == total)
+        {
+            cout << "Respuesta correcta! (" << total << ")" << endl;
+            system("pause");
+            cont = 0;
+        }
+        else if (respuesta != total)
+        {
+            cout << "Incorrecto, la respuesta era " << total << endl;
+            system("pause");
+            //quitar -1 en intentos
+            intentos = intentos - 1;
+            //regresar a la posicion anterior
+            posacx = posantx2;
+            posacy = posanty2;
+            cont = 0;
+        }
+
+    } while (intentos > 0);
+
+    //Mostrar el arreglo de numeros random
+    /*
+    gotoxy(0, 25);
+    for (int i = 0; i < 8; i++)
+    {
+        cout << cadenanum[i] << ",";
+    }
+    cout << endl;
+    */
+    system("Color 04");
+    system("cls");
+    matriz5x5();
+    gotoxy(posacx, posacy);
+    cout << char(01);
+    gotoxy(posfix, posfiy);
+    cout << "META!";
+
+    gotoxy(0, 22);
+    cout << "TE HAS QUEDADO SIN INTENTOS! SUERTE LA PROXIMA" << endl;
+    for (int i = 0; i < 45; i++)
+    {
+        i++;
+        system("Color 04");
+        gotoxy(i, 23);
+        cout << char(205);
+        system("Color 0C");
+    }
+    system("Color 04");
+    gotoxy(0, 24);
+    cout << "Fin del Juego..." << endl;
+    system("pause");
+
+}
